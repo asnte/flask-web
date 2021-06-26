@@ -5,6 +5,7 @@ services:
     volumes:
       - ./conf/nginx/default.conf:/etc/nginx/nginx.conf
       - ./src/backend:/var/www/backend
+      - ./src/frontend:/var/www/frontend
       - ./startup:/var/www/startup
       # nginx エラーログのマウント
       - ./log:/var/log/nginx
