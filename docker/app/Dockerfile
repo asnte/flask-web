@@ -1,14 +1,25 @@
-# ベースイメージ
-FROM python:3.9
+FROM ubuntu
+USER root
 
-RUN mkdir /var/www
-# workdirの指定
-WORKDIR /var/www
+# 必要なものをインストール
+RUN apt-get update
+RUN apt-get -y install software-properties-common
+RUN add-apt-repository ppa:deadsnakes/ppa
+RUN apt-get update
+RUN apt-get -y install nginx
+RUN apt-get -y install python3.9-dev
+RUN apt-get -y install python3-pip
+RUN apt-get -y install gcc
 
-# 依存Pythonライブラリ一覧コピー
-COPY requirements.txt ./
+# PythonのPATH設定
+RUN ln -s /usr/bin/python3.9 /usr/bin/python
+RUN rm -rf /usr/bin/python3
+RUN ln -s /usr/bin/python3.9 /usr/bin/python3
 
-# 依存Pythonライブラリインストール
-RUN pip install --no-cache-dir -r requirements.txt
+# flask、uwsgiをインストール
+RUN pip3 install --upgrade pip
+RUN pip install flask
+RUN pip install uwsgi
 
-CMD ["uwsgi","--ini","/var/www/uwsgi.ini"]
+# 起動
+CMD ["/bin/bash", "/var/www/startup/startup.sh"]

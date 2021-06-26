@@ -1,28 +1,14 @@
 version: "3"
 services:
-
-  uwsgi:
-    # ビルドするDockerfileのでディレクトリ相対パス
+  app:
     build: ./docker/app
-    # 指定したパスをコンテナにマウントする。"ホストのパス:コンテナのパス"となる
-    volumes:
-      - ./src:/var/www/
-    # 解放するポートを指定。"ホスト:コンテナ"のマッピング となる
-    ports:
-      - "3031:3031"
-    # コンテナ内の環境変数を指定する
-    environment:
-      TZ: "Asia/Tokyo"
-
-  nginx:
-    build: ./docker/nginx
     volumes:
       - ./conf/nginx/default.conf:/etc/nginx/nginx.conf
-      # nginxのログをホストOSの ./log に出力する
+      - ./src/backend:/var/www/backend
+      - ./startup:/var/www/startup
+      # nginx エラーログのマウント
       - ./log:/var/log/nginx
-    links:
-      - uwsgi
     ports:
-      - "4231:80"
+      - "3031:80"
     environment:
       TZ: "Asia/Tokyo"
