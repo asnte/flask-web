@@ -11,6 +11,6 @@ services:
       - ./log:/var/log/nginx
     ports:
       - "3031:13031"
-      - "5566:80"
+      - "127.1.2.3:8080:80"
     environment:
       TZ: "Asia/Tokyo"
