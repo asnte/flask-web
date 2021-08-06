@@ -14,3 +14,12 @@ services:
       - "80:80"
     environment:
       TZ: "Asia/Tokyo"
+    links: #確認依頼後、追記
+      - db
+  db:
+    build: ./docker/db #Dockerfileからビルドすることを示す
+    # volumes:
+    # - ./docker/db:/docker-entrypoint-initdb.d  #初期データをマウントする場所
+    image: mysql # イメージの名前
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysql #コンテナ内のMySQLを起動する際のパスワードを設定
